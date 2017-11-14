@@ -3,6 +3,7 @@ package sample;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Controller {
@@ -22,6 +23,7 @@ public class Controller {
             Stage opcje = new Stage();
             opcje.setTitle("Opcje");
             opcje.setScene(new Scene(root, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
         }
         catch(Exception e)
@@ -40,6 +42,7 @@ public class Controller {
             Stage opcje = new Stage();
             opcje.setTitle("KorsarzePC");
             opcje.setScene(new Scene(root1, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
         }
         catch(Exception e)

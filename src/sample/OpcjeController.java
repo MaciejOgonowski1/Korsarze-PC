@@ -4,6 +4,7 @@ package sample;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class OpcjeController {
@@ -11,11 +12,12 @@ public class OpcjeController {
     {
         System.out.println("Login");
         try {
-            Parent root2 = FXMLLoader.load(getClass().getResource("Login.fxml"));
-            Stage opcje1 = new Stage();
-            opcje1.setTitle("NICK");
-            opcje1.setScene(new Scene(root2, 300, 400));
-            opcje1.show();
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Stage opcje = new Stage();
+            opcje.setTitle("NICK");
+            opcje.setScene(new Scene(root, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
+            opcje.show();
         }
         catch(Exception e)
         {
@@ -26,15 +28,48 @@ public class OpcjeController {
     {
         System.out.println("Ustawienia");
         try {
-            Parent root3 = FXMLLoader.load(getClass().getResource("ustawienia.fxml"));
-            Stage opcje2 = new Stage();
-            opcje2.setTitle("Ustawienia");
-            opcje2.setScene(new Scene(root3, 300, 400));
-            opcje2.show();
+            Parent root = FXMLLoader.load(getClass().getResource("ustawienia.fxml"));
+            Stage opcje = new Stage();
+            opcje.setTitle("Ustawienia");
+            opcje.setScene(new Scene(root, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
+            opcje.show();
         }
         catch(Exception e)
         {
             System.out.println("Nie mogę otworzyć ustawien");
+        }
+    }
+    public void statystyka()
+    {
+        System.out.println("Statystyki");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Statystyki.fxml"));
+            Stage opcje = new Stage();
+            opcje.setTitle("Statystyki");
+            opcje.setScene(new Scene(root, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
+            opcje.show();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Nie mogę otworzyć statystyk");
+        }
+    }
+    public void oAplikajcji()
+    {
+        System.out.println("O aplikacji");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("OAplikacji.fxml"));
+            Stage opcje = new Stage();
+            opcje.setTitle("O Aplikacji");
+            opcje.setScene(new Scene(root, 300, 400));
+            opcje.initModality(Modality.APPLICATION_MODAL);
+            opcje.show();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Nie mogę otworzyć oAplikacji");
         }
     }
 }

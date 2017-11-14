@@ -24,12 +24,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="150.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Statystyki" />
+                        <Button mnemonicParsing="false" onAction="#statystyka" text="Statystyki" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="150.0">
                      <children>
-                        <Button mnemonicParsing="false" text="O Aplikacji" />
+                        <Button mnemonicParsing="false" onAction="#oAplikajcji" text="O Aplikacji" />
                      </children>
                   </HBox>
                </children>
