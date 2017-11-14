@@ -1,4 +1,4 @@
-package opcje;
+package sample;
 
 
 import javafx.fxml.FXMLLoader;
@@ -22,5 +22,19 @@ public class OpcjeController {
             System.out.println("Nie mogę otworzyć login");
         }
     }
-
+    public void ustawienia()
+    {
+        System.out.println("Ustawienia");
+        try {
+            Parent root3 = FXMLLoader.load(getClass().getResource("ustawienia.fxml"));
+            Stage opcje2 = new Stage();
+            opcje2.setTitle("Ustawienia");
+            opcje2.setScene(new Scene(root3, 300, 400));
+            opcje2.show();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Nie mogę otworzyć ustawien");
+        }
+    }
 }
