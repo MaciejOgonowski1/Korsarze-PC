@@ -1,2 +1,3 @@
-public class Algorytm {
+public class Algorytm
+{
 }
