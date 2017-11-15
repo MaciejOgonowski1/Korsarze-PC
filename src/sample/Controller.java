@@ -16,7 +16,8 @@ public class Controller {
         primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.show();
         */
-        try {
+        try
+        {
           //  FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Opcje.fxml"));
           //  Parent root1 = (Parent) fxmlLoader.load();
             Parent root = FXMLLoader.load(getClass().getResource("Opcje.fxml"));
@@ -36,7 +37,8 @@ public class Controller {
     public void clickZaloguj()
     {
         System.out.println("Zaloguj");
-        try {
+        try
+        {
             //  FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Opcje.fxml"));
             //  Parent root1 = (Parent) fxmlLoader.load();
             Parent root1 = FXMLLoader.load(getClass().getResource("Graj.fxml"));
