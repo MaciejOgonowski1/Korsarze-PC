@@ -21,7 +21,7 @@ public class OpcjeController {
         }
         catch(Exception e)
         {
-            System.out.println("Nie mogę otworzyć login");
+            System.out.println("Nie mogę otworzyć login!!!");
         }
     }
     public void ustawienia()

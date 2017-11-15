@@ -29,6 +29,7 @@ public class Controller {
         catch(Exception e)
         {
             System.out.println("Nie mogę otworzyć opcje");
+            System.out.println("Test");
         }
 
     }
