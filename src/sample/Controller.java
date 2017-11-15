@@ -42,7 +42,7 @@ public class Controller {
             Parent root1 = FXMLLoader.load(getClass().getResource("Graj.fxml"));
             Stage opcje = new Stage();
             opcje.setTitle("KorsarzePC");
-            opcje.setScene(new Scene(root1, 300, 400));
+            opcje.setScene(new Scene(root1, 1280, 720));
             opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
         }

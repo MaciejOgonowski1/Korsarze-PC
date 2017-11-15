@@ -63,7 +63,7 @@ public class OpcjeController {
             Parent root = FXMLLoader.load(getClass().getResource("OAplikacji.fxml"));
             Stage opcje = new Stage();
             opcje.setTitle("O Aplikacji");
-            opcje.setScene(new Scene(root, 300, 400));
+            opcje.setScene(new Scene(root, 300, 300));
             opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
         }
