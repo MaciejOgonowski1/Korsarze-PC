@@ -71,8 +71,15 @@ public class Controller
     public void onOpMapEntered(MouseEvent mouseEvent) {
     }
 
-    public void serwer() throws Exception {
+    public void serwer() throws Exception
+    {
         GrajController serwer=new GrajController();
         serwer.startSerwer();
+    }
+
+    public void klient() throws Exception
+    {
+        GrajController klient=new GrajController();
+        klient.startKlient();
     }
 }

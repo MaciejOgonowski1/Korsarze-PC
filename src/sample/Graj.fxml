@@ -17,7 +17,7 @@
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                 <Button fx:id="buttonSerwer" mnemonicParsing="false" onAction="#serwer" text="Serwer" />
-                  <Button mnemonicParsing="false" text="Klient" />
+                  <Button fx:id="buttonKlient" mnemonicParsing="false" onAction="#klient" text="Klient" />
               </items>
             </ToolBar>
             <HBox prefHeight="680.0" prefWidth="1280.0" spacing="20.0">

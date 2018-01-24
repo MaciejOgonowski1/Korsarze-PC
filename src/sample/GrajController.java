@@ -56,4 +56,47 @@ public class GrajController
         }
     }
 
+    public void startKlient() throws Exception{
+        String sentence;
+        String modifiedSentence;
+
+        Socket clientSocket = new Socket("localhost", 6789);
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        System.out.println("Klient Dziala");
+        int[] tab=new int[3];
+        int[] odb=new int[3];
+        int wynik;
+        tab[0]=12;
+        tab[1]=15;
+        tab[2]=1;
+
+        while(true)
+        {
+
+            sentence = inFromUser.readLine();
+            outToServer.writeBytes(sentence + '\n');
+            modifiedSentence = inFromServer.readLine();
+            System.out.println("FROM SERVER: " + modifiedSentence);
+
+            //tab[0] = inFromUser.read();
+            outToServer.write(tab[0]);
+            wynik = inFromServer.read();
+            System.out.println("FROM SERVER: " + wynik);
+
+            //tab[1] = inFromUser.read();
+            outToServer.write(tab[1]);
+            wynik = inFromServer.read();
+            System.out.println("FROM SERVER: " + wynik);
+
+            //tab[2] = inFromUser.read();
+            outToServer.write(tab[2]);
+            wynik = inFromServer.read();
+            System.out.println("FROM SERVER: " + wynik);
+            System.out.println("Koniec Danych");
+
+        }
+    }
+
 }
