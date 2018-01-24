@@ -3,10 +3,16 @@ package sample;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Controller {
+public class Controller
+{
+
+    public GridPane opponentGrifdPane;
+
     public void clickOpcje()
     {
         System.out.println("Opcje");
@@ -29,8 +35,7 @@ public class Controller {
         }
         catch(Exception e)
         {
-            System.out.println("Nie mogę otworzyć opcje");
-            System.out.println("Test");
+            System.out.println(e);
         }
 
     }
@@ -39,18 +44,30 @@ public class Controller {
         System.out.println("Zaloguj");
         try
         {
-            //  FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Opcje.fxml"));
-            //  Parent root1 = (Parent) fxmlLoader.load();
-            Parent root1 = FXMLLoader.load(getClass().getResource("Graj.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("Graj.fxml"));
             Stage opcje = new Stage();
             opcje.setTitle("KorsarzePC");
-            opcje.setScene(new Scene(root1, 1280, 720));
+            opcje.setScene(new Scene(root, 1280, 720));
             opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
         }
         catch(Exception e)
         {
-            System.out.println("Nie mogę otworzyć Graj");
+            System.out.println(e);
         }
+    }
+
+    public void onOpMapClick(MouseEvent mouseEvent)
+    {
+        //System.out.println(opponentGrifdPane.getColumnIndex();
+    }
+
+    public void onMyMapClick(MouseEvent mouseEvent) {
+    }
+
+    public void onMyMapEntered(MouseEvent mouseEvent) {
+    }
+
+    public void onOpMapEntered(MouseEvent mouseEvent) {
     }
 }
