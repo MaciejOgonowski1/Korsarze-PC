@@ -35,12 +35,8 @@ public class GrajController
         int[] tab = new int[3];
 
         while (true) {
-
-            clientSentence = inFromClient.readLine();
-            System.out.println("Klient: " + clientSentence);
-            capitalizedSentence = clientSentence.toUpperCase() + zmienna + '\n';
-            outToClient.writeBytes(capitalizedSentence);
-
+            System.out.println("Czy statki sa rozlozone?");
+            wyslac=inFromClient.read();
 
             wynik = inFromClient.read();
             System.out.println("Klient: " + wynik);
@@ -68,33 +64,59 @@ public class GrajController
         int[] tab=new int[3];
         int[] odb=new int[3];
         int wynik;
+        int dane=1;
         tab[0]=12;
         tab[1]=15;
         tab[2]=1;
 
+        System.out.println("Klient rozlozyl statki czekam na serwer");
+        outToServer.write(dane);
+        wynik = inFromServer.read();
+        System.out.println("FROM SERVER: " + wynik);
+        int trafiony=1;
+
         while(true)
         {
+            if(wynik==1) {//statki rozlozone poczatek gry strzela klient
+                if (wynik == 1) { //przeslanie danych 0,1 koordy strzalu klienta
+                    outToServer.write(tab[0]); //wyslanie danych do klienta
+                    outToServer.write(tab[1]);
+                    outToServer.write(tab[2]);
+                    wynik = inFromServer.read(); //czy trafiono w statek
+                    if(trafiony==1)//trafiony
+                    {
+                        outToServer.write(tab[0]); //wyslanie danych do klienta
+                        outToServer.write(tab[1]);
+                        outToServer.write(tab[2]);
+                        wynik = inFromServer.read(); //czy trafiono w statek
+                    }
+                    else if (trafiony==0)//nie trafiony strzela klient
+                    {
+                        trafiony=0;
+                        outToServer.write(trafiony);
+                        odb[0] = inFromServer.read();
+                        odb[1] = inFromServer.read();
+                        odb[2] = inFromServer.read();
+                        if(odb[2]==1)//serwer trafiony
+                        {
+                            trafiony=0;
+                            outToServer.write(trafiony);
+                            odb[0] = inFromServer.read();
+                            odb[1] = inFromServer.read();
+                            odb[2] = inFromServer.read();
+                        }
+                        else if(odb[2]==0)//serwer nie trafiony
+                        {
+                            trafiony=1;//strzela serwer
+                        }
+                    }
+                }
+                else if(wynik == 0) //
+                {
+                    System.out.println("Nie ulozone");
 
-            sentence = inFromUser.readLine();
-            outToServer.writeBytes(sentence + '\n');
-            modifiedSentence = inFromServer.readLine();
-            System.out.println("FROM SERVER: " + modifiedSentence);
-
-            //tab[0] = inFromUser.read();
-            outToServer.write(tab[0]);
-            wynik = inFromServer.read();
-            System.out.println("FROM SERVER: " + wynik);
-
-            //tab[1] = inFromUser.read();
-            outToServer.write(tab[1]);
-            wynik = inFromServer.read();
-            System.out.println("FROM SERVER: " + wynik);
-
-            //tab[2] = inFromUser.read();
-            outToServer.write(tab[2]);
-            wynik = inFromServer.read();
-            System.out.println("FROM SERVER: " + wynik);
-            System.out.println("Koniec Danych");
+                }
+            }
 
         }
     }
