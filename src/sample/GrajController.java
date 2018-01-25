@@ -18,36 +18,96 @@ public class GrajController
 {
     public GridPane opponentGrifdPane;
     public GridPane myGridPane;
+    int trafienieSerwera=0;
+    int trafienieKlienta=0;
 
+    public void setTrafienieSerwera(int trafienieSerwera) {
+        this.trafienieSerwera = trafienieSerwera;
+    }
+
+    public int getTrafienieSerwera() {
+        return trafienieSerwera;
+    }
+
+    public void setTrafienieKlienta(int trafienieKlienta) {
+        this.trafienieKlienta = trafienieKlienta;
+    }
+
+    public int getTrafienieKlienta() {
+        return trafienieKlienta;
+    }
 
     public void startSerwer() throws Exception {
-        System.out.println("Serwer Test wlaczaony");
-        String clientSentence;
-        String capitalizedSentence;
+
         ServerSocket welcomeSocket = new ServerSocket(6789);
         Socket connectionSocket = welcomeSocket.accept();
         BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
         DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-        String zmienna;
-        zmienna = "Cos dodatkowego";
-        int wynik;
-        int wyslac;
-        int[] tab = new int[3];
+        int serwerGotowy=0;
 
-        while (true) {
-            System.out.println("Czy statki sa rozlozone?");
-            wyslac=inFromClient.read();
+        int klientGotowy=0;
+        boolean flaga=true;
+        int[] wspolrzedneSerwer = new int[2];
+        int[] wspolrzedneKlient = new int[2];
 
-            wynik = inFromClient.read();
-            System.out.println("Klient: " + wynik);
-            outToClient.write((wynik));
-            wynik = inFromClient.read();
-            System.out.println("Klient: " + wynik);
-            outToClient.write((wynik));
-            wynik = inFromClient.read();
-            System.out.println("Klient: " + wynik);
-            outToClient.write((wynik));
-            System.out.println("Koniec pierwszych danych");
+
+        serwerGotowy=inFromClient.read();
+        if(serwerGotowy==1)//Klient ulozyl statki
+        {
+            if(klientGotowy==1) {//dodac czekanie az serwer ulozy statki
+                outToClient.write(klientGotowy);
+                wspolrzedneSerwer[0] = inFromClient.read();
+                wspolrzedneSerwer[1] = inFromClient.read();
+                setTrafienieSerwera(0);//dodac sprawdzenie czy serwer trafiony czy nie
+                 while (flaga) {
+                    if (getTrafienieSerwera() == 1)//trafiony serwer
+                    {
+                        setTrafienieKlienta(2);
+                        outToClient.write(getTrafienieSerwera());
+                        wspolrzedneSerwer[0] = inFromClient.read();
+                        wspolrzedneSerwer[1] = inFromClient.read();
+                        setTrafienieSerwera(1);//sprawdzenie czy serwer trafiony
+                        outToClient.write(getTrafienieSerwera());
+                        break;
+
+                    }
+                    else if (getTrafienieSerwera() == 0)//nietrafiony serwer
+                    {
+                        setTrafienieSerwera(2);
+                        //wybranie wspolrzednych strzalu serwera
+                        outToClient.write(wspolrzedneKlient[0]);
+                        outToClient.write(wspolrzedneKlient[1]);
+                        setTrafienieKlienta(inFromClient.read());
+                        break;
+                    }
+                    else if(getTrafienieKlienta()==1)
+                    {
+                        setTrafienieSerwera(2);
+                        outToClient.write(wspolrzedneKlient[0]);
+                        outToClient.write(wspolrzedneKlient[1]);
+                        setTrafienieKlienta(inFromClient.read());
+                        break;
+                    }
+                    else if (getTrafienieKlienta()==0)
+                    {
+                        setTrafienieKlienta(2);
+                        wspolrzedneSerwer[0] = inFromClient.read();
+                        wspolrzedneSerwer[1] = inFromClient.read();
+                        setTrafienieSerwera(1);//sprawdzenie czy serwer trafiony
+                        outToClient.write(getTrafienieSerwera());
+                        break;
+                    }
+                    else
+                    {
+                        System.out.println("Blad przy trafieniu");
+                    }
+                }
+            }
+            else
+            {
+                System.out.println("Blad z gotowoscia klienta");
+            }
+
 
         }
     }
