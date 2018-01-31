@@ -1,17 +1,53 @@
 package sample;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Controller
 {
 
     public GridPane opponentGrifdPane;
+
+    public ColumnConstraints x0;
+    public ColumnConstraints x1;
+    public ColumnConstraints x2;
+    public ColumnConstraints x3;
+    public ColumnConstraints x4;
+    public ColumnConstraints x5;
+    public ColumnConstraints x6;
+    public ColumnConstraints x7;
+    public ColumnConstraints x8;
+    public ColumnConstraints x9;
+    public RowConstraints y0;
+    public RowConstraints y1;
+    public RowConstraints y2;
+    public RowConstraints y3;
+    public RowConstraints y4;
+    public RowConstraints y5;
+    public RowConstraints y6;
+    public RowConstraints y7;
+    public RowConstraints y8;
+    public RowConstraints y9;
+
 
     public void clickOpcje()
     {
@@ -59,7 +95,34 @@ public class Controller
 
     public void onOpMapClick(MouseEvent mouseEvent)
     {
-        //System.out.println(opponentGrifdPane.getColumnIndex();
+        //System.out.println(opponentGrifdPane.getColumnIndex());
+        //opponentGrifdPane.setStyle("-fx-background-color: yellow");
+        Pane statek=new Pane();
+        statek.setStyle("-fx-background-color: yellow");
+        opponentGrifdPane.add(statek,0,2);
+
+        System.out.println("Cos tam niby dziala");
+
+        Label statek2=new Label("Siemandero");
+        //statek1.setStyle("-fx-border-color: yellow");
+        //Image statek1=new Image(getClass().getResourceAsStream("C:\\Users\\Maciej\\Desktop\\Github\\KorsarzePC\\out\\production\\KorsarzePC\\sample\\Pictures\\ship.jpg"));
+        //ImageView imageView = new ImageView();
+        ///imageView.setImage(statek1);
+        //Image statek1=new Image(getClass().getResourceAsStream("ship.jpg"));
+        //opponentGrifdPane.getChildren().add(new ImageView(image));
+       // Image image=new Image("ship.png");
+
+
+        //opponentGrifdPane.add(image,0,2);
+        opponentGrifdPane.add(statek2,0,1);
+
+
+
+
+
+
+
+
     }
 
     public void onMyMapClick(MouseEvent mouseEvent) {

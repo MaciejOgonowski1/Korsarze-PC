@@ -123,10 +123,8 @@ public class GrajController
     }
 
     public void startKlient() throws Exception{
-
-
         Socket clientSocket = new Socket("localhost", 6789);
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -144,46 +142,46 @@ public class GrajController
             System.out.println("Klient gotowy");
             serwerGotowy = inFromServer.read();
             if (serwerGotowy == 1) {
-                System.out.println("Serwer gotowy");
-                wspolrzedneSerwer[0] = 2;//ustawienie wspolrzednych strzalu
-                wspolrzedneSerwer[1] = 7;
-                outToServer.write(wspolrzedneSerwer[0]);
-                outToServer.write(wspolrzedneSerwer[1]);
-                setTrafienieSerwera(inFromServer.read());
-                System.out.println("Wspolrzedne serwera przed while"+wspolrzedneSerwer[0]+" "+wspolrzedneSerwer[1]+" trafienie "+getTrafienieSerwera());
-                while (flaga) {
-                    System.out.println("While");
-                    if (getTrafienieSerwera() == 1) {
-                        setTrafienieKlienta(2);
+                        System.out.println("Serwer gotowy");
                         wspolrzedneSerwer[0] = 2;//ustawienie wspolrzednych strzalu
-                        wspolrzedneSerwer[1] = 3;
+                        wspolrzedneSerwer[1] = 7;
                         outToServer.write(wspolrzedneSerwer[0]);
                         outToServer.write(wspolrzedneSerwer[1]);
                         setTrafienieSerwera(inFromServer.read());
-                        System.out.println("Wspolrzedne Serwera sts=1"+wspolrzedneSerwer[0]+" "+wspolrzedneSerwer[1]+" trafienie "+getTrafienieSerwera());
-                    } else if (getTrafienieSerwera() == 0) {
-                        setTrafienieSerwera(2);
-                        wspolrzedneKlient[0] = inFromServer.read();
-                        wspolrzedneKlient[1] = inFromServer.read();
-                        setTrafienieKlienta(1);//sprawdzenie czy klient trafiony
-                        outToServer.write((getTrafienieKlienta()));
-                        System.out.println("Wspolrzedne klienta sts=0"+wspolrzedneKlient[0]+" "+wspolrzedneKlient[1]+" trafienie "+getTrafienieKlienta());
-                    } else if (getTrafienieKlienta() == 1) {
-                        setTrafienieSerwera(2);
-                        wspolrzedneKlient[0] = inFromServer.read();
-                        wspolrzedneKlient[1] = inFromServer.read();
-                        setTrafienieKlienta(0);//wprawdzenie czy klient trafiony
-                        outToServer.write(getTrafienieKlienta());
-                        System.out.println("Wspolrzedne klienta stk=1"+wspolrzedneKlient[0]+" "+wspolrzedneKlient[1]+" trafienie "+getTrafienieKlienta());
-                    } else if (getTrafienieKlienta() == 0) {
-                        setTrafienieKlienta(2);
-                        wspolrzedneSerwer[0] = 2;//ustawienie wspolrzednych strzalu
-                        wspolrzedneSerwer[1] = 3;
-                        outToServer.write(wspolrzedneSerwer[0]);
-                        outToServer.write(wspolrzedneSerwer[1]);
-                        setTrafienieSerwera(inFromServer.read());
-                        System.out.println("Wspolrzedne klienta stk=0"+wspolrzedneSerwer[0]+" "+wspolrzedneSerwer[1]+" trafienie "+getTrafienieSerwera());
-                    } else {
+                        System.out.println("Wspolrzedne serwera przed while" + wspolrzedneSerwer[0] + " " + wspolrzedneSerwer[1] + " trafienie " + getTrafienieSerwera());
+                        while (flaga) {
+                            System.out.println("While");
+                            if (getTrafienieSerwera() == 1) {
+                                setTrafienieKlienta(2);
+                                wspolrzedneSerwer[0] = 2;//ustawienie wspolrzednych strzalu
+                                wspolrzedneSerwer[1] = 3;
+                                outToServer.write(wspolrzedneSerwer[0]);
+                                outToServer.write(wspolrzedneSerwer[1]);
+                                setTrafienieSerwera(inFromServer.read());
+                                System.out.println("Wspolrzedne Serwera sts=1" + wspolrzedneSerwer[0] + " " + wspolrzedneSerwer[1] + " trafienie " + getTrafienieSerwera());
+                            } else if (getTrafienieSerwera() == 0) {
+                                setTrafienieSerwera(2);
+                                wspolrzedneKlient[0] = inFromServer.read();
+                                wspolrzedneKlient[1] = inFromServer.read();
+                                setTrafienieKlienta(1);//sprawdzenie czy klient trafiony
+                                outToServer.write((getTrafienieKlienta()));
+                                System.out.println("Wspolrzedne klienta sts=0" + wspolrzedneKlient[0] + " " + wspolrzedneKlient[1] + " trafienie " + getTrafienieKlienta());
+                            } else if (getTrafienieKlienta() == 1) {
+                                setTrafienieSerwera(2);
+                                wspolrzedneKlient[0] = inFromServer.read();
+                                wspolrzedneKlient[1] = inFromServer.read();
+                                setTrafienieKlienta(0);//wprawdzenie czy klient trafiony
+                                outToServer.write(getTrafienieKlienta());
+                                System.out.println("Wspolrzedne klienta stk=1" + wspolrzedneKlient[0] + " " + wspolrzedneKlient[1] + " trafienie " + getTrafienieKlienta());
+                            } else if (getTrafienieKlienta() == 0) {
+                                setTrafienieKlienta(2);
+                                wspolrzedneSerwer[0] = 2;//ustawienie wspolrzednych strzalu
+                                wspolrzedneSerwer[1] = 3;
+                                outToServer.write(wspolrzedneSerwer[0]);
+                                outToServer.write(wspolrzedneSerwer[1]);
+                                setTrafienieSerwera(inFromServer.read());
+                                System.out.println("Wspolrzedne klienta stk=0" + wspolrzedneSerwer[0] + " " + wspolrzedneSerwer[1] + " trafienie " + getTrafienieSerwera());
+                            } else {
                         System.out.println("Blad przy trafieniu");
                     }
 
