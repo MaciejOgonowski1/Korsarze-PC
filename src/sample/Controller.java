@@ -47,7 +47,8 @@ public class Controller
     public RowConstraints y7;
     public RowConstraints y8;
     public RowConstraints y9;
-
+    public GridPane myGridPane;
+    private boolean  waterGenerated = false;
 
     public void clickOpcje()
     {
@@ -86,6 +87,8 @@ public class Controller
             opcje.setScene(new Scene(root, 1280, 720));
             opcje.initModality(Modality.APPLICATION_MODAL);
             opcje.show();
+
+
         }
         catch(Exception e)
         {
@@ -95,15 +98,17 @@ public class Controller
 
     public void onOpMapClick(MouseEvent mouseEvent)
     {
+
+
         //System.out.println(opponentGrifdPane.getColumnIndex());
         //opponentGrifdPane.setStyle("-fx-background-color: yellow");
         Pane statek=new Pane();
         statek.setStyle("-fx-background-color: yellow");
-        opponentGrifdPane.add(statek,0,2);
+        opponentGrifdPane.add(statek,0,0);
 
         System.out.println("Cos tam niby dziala");
 
-        Label statek2=new Label("Siemandero");
+        //Label statek2=new Label("Siemandero");
         //statek1.setStyle("-fx-border-color: yellow");
         //Image statek1=new Image(getClass().getResourceAsStream("C:\\Users\\Maciej\\Desktop\\Github\\KorsarzePC\\out\\production\\KorsarzePC\\sample\\Pictures\\ship.jpg"));
         //ImageView imageView = new ImageView();
@@ -114,7 +119,7 @@ public class Controller
 
 
         //opponentGrifdPane.add(image,0,2);
-        opponentGrifdPane.add(statek2,0,1);
+        //opponentGrifdPane.add(statek2,0,1);
 
 
 
@@ -125,13 +130,42 @@ public class Controller
 
     }
 
-    public void onMyMapClick(MouseEvent mouseEvent) {
+    public void onMyMapClick(MouseEvent mouseEvent)
+    {
+
     }
 
-    public void onMyMapEntered(MouseEvent mouseEvent) {
+    public void onMyMapEntered(MouseEvent mouseEvent)
+    {
+        if(!waterGenerated)
+        for(int i=0; i<10; i++)
+            for(int j=0; j<10; j++)
+            {
+                Pane woda=new Pane();
+                woda.setStyle("-fx-background-color: blue");
+                Pane woda1=new Pane();
+                woda1.setStyle("-fx-background-color: blue");
+                opponentGrifdPane.add(woda, i, j);
+                myGridPane.add(woda1, i, j);
+            }
+        waterGenerated = true;
+
     }
 
-    public void onOpMapEntered(MouseEvent mouseEvent) {
+    public void onOpMapEntered(MouseEvent mouseEvent)
+    {
+        if(!waterGenerated)
+        for(int i=0; i<10; i++)
+            for(int j=0; j<10; j++)
+            {
+                Pane woda=new Pane();
+                woda.setStyle("-fx-background-color: blue");
+                Pane woda1=new Pane();
+                woda1.setStyle("-fx-background-color: blue");
+                opponentGrifdPane.add(woda, i, j);
+                myGridPane.add(woda1, i, j);
+            }
+        waterGenerated = true;
     }
 
     public void serwer() throws Exception
