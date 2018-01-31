@@ -49,6 +49,8 @@ public class Controller
     public RowConstraints y9;
     public GridPane myGridPane;
     private boolean  waterGenerated = false;
+    private Integer rowIndex;
+    private Integer columnIndex;
 
     public void clickOpcje()
     {
@@ -124,8 +126,11 @@ public class Controller
 
     public void onMyMapClick(MouseEvent mouseEvent)
     {
-
-
+        Node source = (Node)mouseEvent.getSource() ;
+        columnIndex = myGridPane.getColumnIndex(source);
+        rowIndex = myGridPane.getRowIndex(source);
+        System.out.printf("Mouse entered cell [%d, %d]%n", columnIndex.intValue(), rowIndex.intValue());
+        //https://stackoverflow.com/questions/31095954/how-to-get-gridpane-row-and-column-ids-on-mouse-entered-in-each-cell-of-grid-in
     }
 
     public void onMyMapEntered(MouseEvent mouseEvent)
