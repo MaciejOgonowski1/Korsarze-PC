@@ -120,18 +120,11 @@ public class Controller
 
         //opponentGrifdPane.add(image,0,2);
         //opponentGrifdPane.add(statek2,0,1);
-
-
-
-
-
-
-
-
     }
 
     public void onMyMapClick(MouseEvent mouseEvent)
     {
+
 
     }
 
@@ -141,12 +134,12 @@ public class Controller
         for(int i=0; i<10; i++)
             for(int j=0; j<10; j++)
             {
+                Pane nieznane=new Pane();
+                nieznane.setStyle("-fx-background-color: grey");
                 Pane woda=new Pane();
                 woda.setStyle("-fx-background-color: blue");
-                Pane woda1=new Pane();
-                woda1.setStyle("-fx-background-color: blue");
-                opponentGrifdPane.add(woda, i, j);
-                myGridPane.add(woda1, i, j);
+                opponentGrifdPane.add(nieznane, i, j);
+                myGridPane.add(woda, i, j);
             }
         waterGenerated = true;
 
@@ -158,12 +151,12 @@ public class Controller
         for(int i=0; i<10; i++)
             for(int j=0; j<10; j++)
             {
+                Pane nieznane=new Pane();
+                nieznane.setStyle("-fx-background-color: grey");
                 Pane woda=new Pane();
                 woda.setStyle("-fx-background-color: blue");
-                Pane woda1=new Pane();
-                woda1.setStyle("-fx-background-color: blue");
-                opponentGrifdPane.add(woda, i, j);
-                myGridPane.add(woda1, i, j);
+                opponentGrifdPane.add(nieznane, i, j);
+                myGridPane.add(woda, i, j);
             }
         waterGenerated = true;
     }
