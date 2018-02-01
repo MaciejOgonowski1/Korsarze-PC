@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -12,14 +13,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Controller
@@ -48,9 +44,15 @@ public class Controller
     public RowConstraints y8;
     public RowConstraints y9;
     public GridPane myGridPane;
+    public Label messageLabel;
+    public Button grajButton;
     private boolean  waterGenerated = false;
     private Integer rowIndex;
     private Integer columnIndex;
+    private int gameState = 0;  //0 - przygotowanie do gry, 1 - w trakcie, 20 - tura moja, 21 - tura przeciwnika, 3 - po;
+    private Board myBoard = new Board();
+    private Board opponentBoard = new Board(20);
+    private GrajController polaczenie = new GrajController();
 
     public void clickOpcje()
     {
@@ -98,83 +100,215 @@ public class Controller
         }
     }
 
-    public void onOpMapClick(MouseEvent mouseEvent)
-    {
+    public void onOpMapClick(MouseEvent mouseEvent) throws IOException {
+        if (gameState == 0)
+            messageLabel.setText("Najpierw przygotuj się do bitwy");
+        if (gameState == 1)
+            messageLabel.setText("Połącz się z przeciwnikiem");
+        if (gameState == 21)
+            messageLabel.setText("Tura przeciwnika");
+        if (gameState == 20)
+        {
+            Node target = (Node) mouseEvent.getTarget();
+            // traverse towards root until userSelectionGrid is the parent node
+            if (target != opponentGrifdPane) {
+                Node parent;
+                while ((parent = target.getParent()) != opponentGrifdPane) {
+                    target = parent;
+                }
+            }
+            columnIndex = opponentGrifdPane.getColumnIndex(target);
+            rowIndex = opponentGrifdPane.getRowIndex(target);
+            if (columnIndex == null || rowIndex == null) {
+                System.out.println("BOO");
+            } else {
+                System.out.printf("Mouse entered cell [%d, %d]%n", columnIndex.intValue(), rowIndex.intValue());
+            }
 
+            if (opponentBoard.getField(columnIndex, rowIndex) == 0)
+            {
+                opponentBoard.setField(1, columnIndex, rowIndex);
+                Pane pole = new Pane();
+                if (askOpponent(columnIndex.intValue(), rowIndex.intValue()) == 0)//pudło
+                {
+                    pole.setStyle("-fx-background-color: blue");
+                    opponentGrifdPane.add(pole, columnIndex.intValue(), rowIndex.intValue());
+                    messageLabel.setText("Pudło. Teraz tura przeciwnika");
+                    gameState = 21;
+                    opponentMove();
+                }
+                else //trafienie
+                {
+                    pole.setStyle("-fx-background-color: yellow");
+                    opponentGrifdPane.add(pole, columnIndex.intValue(), rowIndex.intValue());
+                    opponentBoard.decrementShipCounter();
+                    if (opponentBoard.getShip() > 0)
+                        messageLabel.setText("Trafienie. Atakuj ponownie");
+                    else {
+                        messageLabel.setText("Odniosłeś wspaniałe zwycięstwo");
+                        gameState = 3;
+                        ///podsumowanie
+                    }
+                }
+            }
+            else
+                messageLabel.setText("pole już atakowane");
 
-        //System.out.println(opponentGrifdPane.getColumnIndex());
-        //opponentGrifdPane.setStyle("-fx-background-color: yellow");
-        Pane statek=new Pane();
-        statek.setStyle("-fx-background-color: yellow");
-        opponentGrifdPane.add(statek,0,0);
-
-        System.out.println("Cos tam niby dziala");
-
-        //Label statek2=new Label("Siemandero");
-        //statek1.setStyle("-fx-border-color: yellow");
-        //Image statek1=new Image(getClass().getResourceAsStream("C:\\Users\\Maciej\\Desktop\\Github\\KorsarzePC\\out\\production\\KorsarzePC\\sample\\Pictures\\ship.jpg"));
-        //ImageView imageView = new ImageView();
-        ///imageView.setImage(statek1);
-        //Image statek1=new Image(getClass().getResourceAsStream("ship.jpg"));
-        //opponentGrifdPane.getChildren().add(new ImageView(image));
-       // Image image=new Image("ship.png");
-
-
-        //opponentGrifdPane.add(image,0,2);
-        //opponentGrifdPane.add(statek2,0,1);
+        }
     }
 
     public void onMyMapClick(MouseEvent mouseEvent)
     {
-        Node source = (Node)mouseEvent.getSource() ;
-        columnIndex = myGridPane.getColumnIndex(source);
-        rowIndex = myGridPane.getRowIndex(source);
-        System.out.printf("Mouse entered cell [%d, %d]%n", columnIndex.intValue(), rowIndex.intValue());
-        //https://stackoverflow.com/questions/31095954/how-to-get-gridpane-row-and-column-ids-on-mouse-entered-in-each-cell-of-grid-in
+        if(gameState == 0)
+        {
+            Node target = (Node) mouseEvent.getTarget();
+            // traverse towards root until userSelectionGrid is the parent node
+            if (target != myGridPane) {
+                Node parent;
+                while ((parent = target.getParent()) != myGridPane) {
+                    target = parent;
+                }
+            }
+            columnIndex = myGridPane.getColumnIndex(target);
+            rowIndex = myGridPane.getRowIndex(target);
+            if (columnIndex == null || rowIndex == null) {
+                System.out.println("BOO");
+            } else {
+                System.out.printf("Mouse entered cell [%d, %d]%n", columnIndex.intValue(), rowIndex.intValue());
+            }
+
+
+            //ustaw statek
+            if(myBoard.getField(columnIndex, rowIndex) == 0)
+            {
+                if (myBoard.getShip()<20)
+                {
+                    myBoard.setField(1, columnIndex, rowIndex);
+                    myBoard.incrementShipCounter();
+                    Pane statek = new Pane();
+                    statek.setStyle("-fx-background-color: yellow");
+                    myGridPane.add(statek, columnIndex.intValue(), rowIndex.intValue());
+                }
+                else
+                    messageLabel.setText("Twoja flota jest wystarczająco duża. Możesz rozpocząć grę");
+            }
+            else if(myBoard.getField(columnIndex, rowIndex) == 1)
+            {
+                myBoard.setField(0,columnIndex, rowIndex);
+                myBoard.decrementShipCounter();
+                Pane woda = new Pane();
+                woda.setStyle("-fx-background-color: blue");
+                myGridPane.add(woda, columnIndex.intValue(), rowIndex.intValue());
+                messageLabel.setText("Rozstaw swoją flotę na prawej planszy");
+            }
+        }
+        else
+            messageLabel.setText("Już nie możes zmienić ustawienia floty");
+
     }
 
     public void onMyMapEntered(MouseEvent mouseEvent)
     {
-        if(!waterGenerated)
-        for(int i=0; i<10; i++)
-            for(int j=0; j<10; j++)
-            {
-                Pane nieznane=new Pane();
-                nieznane.setStyle("-fx-background-color: grey");
-                Pane woda=new Pane();
-                woda.setStyle("-fx-background-color: blue");
-                opponentGrifdPane.add(nieznane, i, j);
-                myGridPane.add(woda, i, j);
-            }
-        waterGenerated = true;
+        if(!waterGenerated) {
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++) {
+                    Pane nieznane = new Pane();
+                    nieznane.setStyle("-fx-background-color: grey");
+                    Pane woda = new Pane();
+                    woda.setStyle("-fx-background-color: blue");
+                    opponentGrifdPane.add(nieznane, i, j);
+                    myGridPane.add(woda, i, j);
+                }
+            waterGenerated = true;
+
+        }
 
     }
 
     public void onOpMapEntered(MouseEvent mouseEvent)
     {
-        if(!waterGenerated)
-        for(int i=0; i<10; i++)
-            for(int j=0; j<10; j++)
-            {
-                Pane nieznane=new Pane();
-                nieznane.setStyle("-fx-background-color: grey");
-                Pane woda=new Pane();
-                woda.setStyle("-fx-background-color: blue");
-                opponentGrifdPane.add(nieznane, i, j);
-                myGridPane.add(woda, i, j);
-            }
-        waterGenerated = true;
+        if(!waterGenerated) {
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++) {
+                    Pane nieznane = new Pane();
+                    nieznane.setStyle("-fx-background-color: grey");
+                    Pane woda = new Pane();
+                    woda.setStyle("-fx-background-color: blue");
+                    opponentGrifdPane.add(nieznane, i, j);
+                    myGridPane.add(woda, i, j);
+                }
+            waterGenerated = true;
+            messageLabel.setText("Rozstaw swoją flotę na prawej planszy");
+        }
     }
 
     public void serwer() throws Exception
     {
-        GrajController serwer=new GrajController();
-        serwer.startSerwer();
+        if (gameState == 1)
+        {
+            polaczenie.startSerwer2();
+            gameState = 21;
+            opponentMove();
+        }
     }
 
     public void klient() throws Exception
     {
-        GrajController klient=new GrajController();
-        klient.startKlient();
+        if (gameState == 1)
+        {
+            polaczenie.startKlient2();
+            gameState = 20;
+        }
     }
+
+    public void onGrajClick(ActionEvent actionEvent)
+    {
+        if (gameState == 0)
+            if(myBoard.getShip() == 20)
+            {
+                gameState = 1;
+                grajButton.setVisible(false);
+                messageLabel.setText("Połącz się z przeciwnikiem");
+            }
+            else
+                messageLabel.setText("Rozstaw statki na 20 polach");
+    }
+    public void opponentMove() throws IOException {
+        while(gameState == 21)
+        {
+            int x = polaczenie.getData();
+            int y = polaczenie.getData();
+            int answer = myBoard.getField(x,y);
+            polaczenie.sendData(answer);
+            if (answer == 1)//trafienie
+            {
+                messageLabel.setText("Trafienie");
+                Pane statek = new Pane();
+                statek.setStyle("-fx-background-color: red ");
+                myGridPane.add(statek, x, y);
+                myBoard.decrementShipCounter();
+                if (myBoard.getShip() <= 0) {
+                    messageLabel.setText("Porażka");
+                    gameState = 3;
+                    //podsumowanie
+                }
+            }
+            else
+            {
+                messageLabel.setText("Pudło. Twój ruch");
+                Pane statek = new Pane();
+                statek.setStyle("-fx-background-color: navy ");
+                myGridPane.add(statek, x, y);
+                gameState = 20;
+            }
+        }
+    }
+
+    public int askOpponent(int x, int y) throws IOException
+    {
+        polaczenie.sendData(x);
+        polaczenie.sendData(y);
+        return polaczenie.getData();
+    }
+
 }

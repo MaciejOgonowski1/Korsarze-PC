@@ -1,21 +1,69 @@
 package sample;
 
-import javafx.scene.layout.GridPane;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class GrajController
 {
+    BufferedReader inFromClient;
+    DataOutputStream outToClient;
+    DataOutputStream outToServer;
+    BufferedReader inFromServer;
+    private boolean flaga; //0 - serwer, 1 - klient, 2
+    private int x;
+    private int y;
+
+    public void startSerwer2() throws Exception
+    {
+        flaga = false;
+        ServerSocket welcomeSocket = new ServerSocket(6789);
+        Socket connectionSocket = welcomeSocket.accept();
+        inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+        outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+        System.out.println("Serwer wlaczony!!!");
+    }
+
+
+    public void startKlient2() throws Exception
+    {
+        flaga = true;
+        Socket clientSocket = new Socket("localhost", 6789);
+        outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        System.out.println("Klient wlaczony!!!");
+    }
+
+    public void sendData (int data) throws IOException {
+        if(!flaga)
+        {
+            outToClient.write(data);
+        }
+        else
+        {
+            outToServer.write(data);
+        }
+    }
+
+    public int getData () throws IOException {
+        int data;
+        if(!flaga)
+        {
+            data = inFromClient.read();
+        }
+        else
+        {
+            data = inFromServer.read();
+        }
+        return data;
+    }
+
+
+    /*
     public GridPane opponentGrifdPane;
     public GridPane myGridPane;
     int trafienieSerwera=0;
@@ -191,6 +239,10 @@ public class GrajController
             }
         }
     }
+*/
+
+
+
 
 
 }
